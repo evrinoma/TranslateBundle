@@ -17,8 +17,8 @@ use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\DtoCommon\ValueObject\Immutable\IdInterface;
 use Evrinoma\TranslateBundle\DtoCommon\ValueObject\Immutable\CodeDstInterface;
 use Evrinoma\TranslateBundle\DtoCommon\ValueObject\Immutable\CodeSrcInterface;
-use Evrinoma\TranslateBundle\DtoCommon\ValueObject\Immutable\TextSrcInterface;
 use Evrinoma\TranslateBundle\DtoCommon\ValueObject\Immutable\TextDstInterface;
+use Evrinoma\TranslateBundle\DtoCommon\ValueObject\Immutable\TextSrcInterface;
 
 interface TranslateApiDtoInterface extends DtoInterface, IdInterface, CodeSrcInterface, CodeDstInterface, TextSrcInterface, TextDstInterface
 {

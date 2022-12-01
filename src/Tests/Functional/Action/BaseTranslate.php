@@ -17,8 +17,9 @@ use Evrinoma\TestUtilsBundle\Action\AbstractServiceTest;
 use Evrinoma\TranslateBundle\Dto\TranslateApiDto;
 use Evrinoma\TranslateBundle\Dto\TranslateApiDtoInterface;
 use Evrinoma\TranslateBundle\Tests\Functional\Helper\BaseTranslateTestTrait;
+use Evrinoma\TranslateBundle\Tests\Functional\ValueObject\Translate\Code;
 use Evrinoma\TranslateBundle\Tests\Functional\ValueObject\Translate\Id;
-use Evrinoma\UtilsBundle\Model\ActiveModel;
+use Evrinoma\TranslateBundle\Tests\Functional\ValueObject\Translate\Text;
 use Evrinoma\UtilsBundle\Model\Rest\PayloadModel;
 use PHPUnit\Framework\Assert;
 
@@ -42,6 +43,10 @@ class BaseTranslate extends AbstractServiceTest implements BaseTranslateTestInte
         return [
             TranslateApiDtoInterface::DTO_CLASS => static::getDtoClass(),
             TranslateApiDtoInterface::ID => Id::default(),
+            TranslateApiDtoInterface::CODE_SRC => Code::ru(),
+            TranslateApiDtoInterface::CODE_DST => Code::en(),
+            TranslateApiDtoInterface::TEXT_SRC => Text::ru(),
+            TranslateApiDtoInterface::TEXT_DST => Text::en(),
         ];
     }
 
@@ -53,54 +58,59 @@ class BaseTranslate extends AbstractServiceTest implements BaseTranslateTestInte
 
     public function actionCriteriaNotFound(): void
     {
-        $find = $this->criteria([TranslateApiDtoInterface::DTO_CLASS => static::getDtoClass(), TranslateApiDtoInterface::ACTIVE => Active::wrong()]);
+        $find = $this->criteria([TranslateApiDtoInterface::DTO_CLASS => static::getDtoClass(), TranslateApiDtoInterface::CODE_DST => Code::wrong()]);
         $this->testResponseStatusNotFound();
-        Assert::assertArrayHasKey(PayloadModel::PAYLOAD, $find);
-
-        $find = $this->criteria([TranslateApiDtoInterface::DTO_CLASS => static::getDtoClass(), TranslateApiDtoInterface::ID => Id::value(), TranslateApiDtoInterface::ACTIVE => Active::block(), TranslateApiDtoInterface::DESCRIPTION => Description::wrong()]);
-        $this->testResponseStatusNotFound();
-        Assert::assertArrayHasKey(PayloadModel::PAYLOAD, $find);
     }
 
     public function actionCriteria(): void
     {
-        $find = $this->criteria([TranslateApiDtoInterface::DTO_CLASS => static::getDtoClass(), TranslateApiDtoInterface::ACTIVE => Active::value(), TranslateApiDtoInterface::ID => Id::value()]);
-        $this->testResponseStatusOK();
-        Assert::assertCount(1, $find[PayloadModel::PAYLOAD]);
+        $created = $this->createTranslate();
+        $this->testResponseStatusCreated();
 
-        $find = $this->criteria([TranslateApiDtoInterface::DTO_CLASS => static::getDtoClass(), TranslateApiDtoInterface::ACTIVE => Active::delete()]);
-        $this->testResponseStatusOK();
-        Assert::assertCount(3, $find[PayloadModel::PAYLOAD]);
-
-        $find = $this->criteria([TranslateApiDtoInterface::DTO_CLASS => static::getDtoClass(), TranslateApiDtoInterface::ACTIVE => Active::delete(), TranslateApiDtoInterface::DESCRIPTION => Description::value()]);
-        $this->testResponseStatusOK();
-        Assert::assertCount(2, $find[PayloadModel::PAYLOAD]);
-
-        $find = $this->criteria([TranslateApiDtoInterface::DTO_CLASS => static::getDtoClass(), TranslateApiDtoInterface::ID => 49, TranslateApiDtoInterface::ACTIVE => Active::block(), TranslateApiDtoInterface::DESCRIPTION => Description::value()]);
+        $find = $this->criteria([TranslateApiDtoInterface::DTO_CLASS => static::getDtoClass(), TranslateApiDtoInterface::CODE_DST => Code::ru(), TranslateApiDtoInterface::ID => Id::value()]);
         $this->testResponseStatusOK();
         Assert::assertCount(1, $find[PayloadModel::PAYLOAD]);
     }
 
     public function actionDelete(): void
     {
-        $find = $this->assertGet(Id::value());
-
-        Assert::assertEquals(ActiveModel::ACTIVE, $find[PayloadModel::PAYLOAD][0][TranslateApiDtoInterface::ACTIVE]);
+        $created = $this->createTranslate();
+        $this->testResponseStatusCreated();
 
         $this->delete(Id::value());
         $this->testResponseStatusAccepted();
 
-        $delete = $this->assertGet(Id::value());
-
-        Assert::assertEquals(ActiveModel::DELETED, $delete[PayloadModel::PAYLOAD][0][TranslateApiDtoInterface::ACTIVE]);
+        $find = $this->get(Id::value());
+        $this->testResponseStatusNotFound();
     }
 
     public function actionPut(): void
     {
+        $created = $this->createTranslate();
+        $this->testResponseStatusCreated();
+
+        $updated = $this->put(static::getDefault(
+            [
+                TranslateApiDtoInterface::ID => Id::value(),
+                TranslateApiDtoInterface::CODE_DST => Code::ru(),
+                TranslateApiDtoInterface::CODE_SRC => Code::en(),
+                TranslateApiDtoInterface::TEXT_DST => Text::ru(),
+                TranslateApiDtoInterface::TEXT_SRC => Text::en(),
+            ]
+        ));
+        $this->testResponseStatusOK();
+
+        Assert::assertEquals($created[PayloadModel::PAYLOAD][0][TranslateApiDtoInterface::ID], $updated[PayloadModel::PAYLOAD][0][TranslateApiDtoInterface::ID]);
+        Assert::assertNotEquals($created[PayloadModel::PAYLOAD][0][TranslateApiDtoInterface::CODE_DST], $updated[PayloadModel::PAYLOAD][0][TranslateApiDtoInterface::CODE_DST]);
+        Assert::assertNotEquals($created[PayloadModel::PAYLOAD][0][TranslateApiDtoInterface::CODE_SRC], $updated[PayloadModel::PAYLOAD][0][TranslateApiDtoInterface::CODE_SRC]);
+        Assert::assertNotEquals($created[PayloadModel::PAYLOAD][0][TranslateApiDtoInterface::TEXT_DST], $updated[PayloadModel::PAYLOAD][0][TranslateApiDtoInterface::TEXT_DST]);
+        Assert::assertNotEquals($created[PayloadModel::PAYLOAD][0][TranslateApiDtoInterface::TEXT_SRC], $updated[PayloadModel::PAYLOAD][0][TranslateApiDtoInterface::TEXT_SRC]);
     }
 
     public function actionGet(): void
     {
+        $created = $this->createTranslate();
+        $this->testResponseStatusCreated();
         $find = $this->assertGet(Id::value());
     }
 
@@ -141,11 +151,7 @@ class BaseTranslate extends AbstractServiceTest implements BaseTranslateTestInte
 
     public function actionPostDuplicate(): void
     {
-        $this->createTranslate();
-        $this->testResponseStatusCreated();
-
-        $this->createTranslate();
-        $this->testResponseStatusConflict();
+        Assert::markTestIncomplete('This test has not been implemented yet.');
     }
 
     public function actionPostUnprocessable(): void

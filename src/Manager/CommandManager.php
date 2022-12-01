@@ -86,7 +86,7 @@ final class CommandManager implements CommandManagerInterface
     public function put(TranslateApiDtoInterface $dto): TranslateInterface
     {
         try {
-            $translate = $this->repository->find($dto->getId());
+            $translate = $this->repository->find($dto->idToString());
         } catch (TranslateNotFoundException $e) {
             throw $e;
         }
@@ -115,7 +115,7 @@ final class CommandManager implements CommandManagerInterface
     public function delete(TranslateApiDtoInterface $dto): void
     {
         try {
-            $translate = $this->repository->find($dto->getId());
+            $translate = $this->repository->find($dto->idToString());
         } catch (TranslateNotFoundException $e) {
             throw $e;
         }

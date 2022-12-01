@@ -224,7 +224,7 @@ final class TranslateApiController extends AbstractWrappedApiController implemen
      *         name="id",
      *         @OA\Schema(
      *             type="string",
-     *     default="48"
+     *             default="48"
      *         )
      *     ),
      *     @OA\Parameter(
@@ -233,7 +233,7 @@ final class TranslateApiController extends AbstractWrappedApiController implemen
      *         name="code_src",
      *         @OA\Schema(
      *             type="string",
-     *     default="en"
+     *             default="en"
      *         )
      *     ),
      *     @OA\Parameter(
@@ -242,7 +242,7 @@ final class TranslateApiController extends AbstractWrappedApiController implemen
      *         name="code_dst",
      *         @OA\Schema(
      *             type="string",
-     *     default="ru"
+     *             default="ru"
      *         )
      *     ),
      *     @OA\Parameter(
@@ -251,7 +251,7 @@ final class TranslateApiController extends AbstractWrappedApiController implemen
      *         name="text_src",
      *         @OA\Schema(
      *             type="string",
-     *     default="Hello world"
+     *             default="Hello world"
      *         )
      *     )
      * )

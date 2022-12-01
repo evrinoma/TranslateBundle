@@ -4,3 +4,15 @@ Evrinoma\TranslateBundle\Model\Translate\AbstractTranslate:
     id:
       groups: [ API_GET_TRANSLATE, API_POST_TRANSLATE, API_PUT_TRANSLATE, ]
       expose: true
+    codeSrc:
+      groups: [ API_GET_TRANSLATE, API_POST_TRANSLATE, API_PUT_TRANSLATE, ]
+      expose: true
+    codeDst:
+      groups: [ API_GET_TRANSLATE, API_POST_TRANSLATE, API_PUT_TRANSLATE, ]
+      expose: true
+    textSrc:
+      groups: [ API_GET_TRANSLATE, API_POST_TRANSLATE, API_PUT_TRANSLATE, ]
+      expose: true
+    textDst:
+      groups: [ API_GET_TRANSLATE, API_POST_TRANSLATE, API_PUT_TRANSLATE, ]
+      expose: true

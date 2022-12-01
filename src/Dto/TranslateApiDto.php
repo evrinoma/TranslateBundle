@@ -24,9 +24,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TranslateApiDto extends AbstractDto implements TranslateApiDtoInterface
 {
-    use IdTrait;
     use CodeDstTrait;
     use CodeSrcTrait;
+    use IdTrait;
     use TextDstTrait;
     use TextSrcTrait;
 

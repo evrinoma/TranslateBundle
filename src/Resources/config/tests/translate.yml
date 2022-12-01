@@ -1,1 +1,9 @@
 services:
+  evrinoma.translate.test.functional.action.translate:
+    class: Evrinoma\TranslateBundle\Tests\Functional\Action\BaseTranslate
+    public: true
+    arguments:
+
+  Evrinoma\TranslateBundle\Tests\Functional\Action\BaseTranslate:
+    alias: evrinoma.translate.test.functional.action.translate
+    public: true

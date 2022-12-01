@@ -16,6 +16,7 @@ namespace Evrinoma\TranslateBundle\Repository\Translate;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Evrinoma\TranslateBundle\Dto\TranslateApiDtoInterface;
+use Evrinoma\TranslateBundle\Exception\TranslateCannotBeRemovedException;
 use Evrinoma\TranslateBundle\Exception\TranslateCannotBeSavedException;
 use Evrinoma\TranslateBundle\Exception\TranslateNotFoundException;
 use Evrinoma\TranslateBundle\Exception\TranslateProxyException;
@@ -52,6 +53,12 @@ trait TranslateRepositoryTrait
      */
     public function remove(TranslateInterface $translate): bool
     {
+        try {
+            $this->removeWrapped($translate);
+        } catch (ORMInvalidArgumentException $e) {
+            throw new TranslateCannotBeRemovedException($e->getMessage());
+        }
+
         return true;
     }
 

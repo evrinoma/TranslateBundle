@@ -21,9 +21,9 @@ use Evrinoma\TranslateBundle\DtoCommon\ValueObject\Preserve\TextSrcTrait;
 
 trait TranslateApiDtoTrait
 {
-    use IdTrait;
     use CodeDstTrait;
     use CodeSrcTrait;
+    use IdTrait;
     use TextDstTrait;
     use TextSrcTrait;
 }
