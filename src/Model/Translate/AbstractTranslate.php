@@ -44,7 +44,7 @@ abstract class AbstractTranslate implements TranslateInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="text_src_", type="text", nullable=false)
+     * @ORM\Column(name="text_src", type="text", nullable=false)
      */
     protected string $textSrc;
 
@@ -54,6 +54,18 @@ abstract class AbstractTranslate implements TranslateInterface
      * @ORM\Column(name="text_dst", type="text", nullable=false)
      */
     protected string $textDst;
+
+    /**
+     * @param int $id
+     *
+     * @return TranslateInterface
+     */
+    public function setId(int $id): TranslateInterface
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     /**
      * @return string

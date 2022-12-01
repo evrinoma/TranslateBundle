@@ -32,6 +32,11 @@ services:
     public: true
     arguments:
 
+  evrinoma.translate.api.repository:
+    class: Evrinoma\TranslateBundle\Repository\Api\Translate\TranslateRepository
+    public: true
+    arguments:
+
   evrinoma.translate.command.manager:
     class: Evrinoma\TranslateBundle\Manager\CommandManager
     arguments:
@@ -59,13 +64,21 @@ services:
   Evrinoma\TranslateBundle\Validator\TranslateValidator:
     alias: evrinoma.translate.validator
 
-  evrinoma.translate.query.mediator:
-    class: Evrinoma\TranslateBundle\Mediator\QueryMediator
+  evrinoma.translate.query.orm.mediator:
+    class: Evrinoma\TranslateBundle\Mediator\Orm\QueryMediator
     public: true
     arguments:
 
-  Evrinoma\TranslateBundle\Mediator\QueryMediator:
-    alias: evrinoma.translate.query.mediator
+  Evrinoma\TranslateBundle\Mediator\Orm\QueryMediator:
+    alias: evrinoma.translate.query.orm.mediator
+
+  evrinoma.translate.query.api.mediator:
+    class: Evrinoma\TranslateBundle\Mediator\Api\QueryMediator
+    public: true
+    arguments:
+
+  Evrinoma\TranslateBundle\Mediator\Api\QueryMediator:
+    alias: evrinoma.translate.query.api.mediator
 
   Evrinoma\TranslateBundle\Mediator\QueryMediatorInterface:
     alias: evrinoma.translate.query.mediator

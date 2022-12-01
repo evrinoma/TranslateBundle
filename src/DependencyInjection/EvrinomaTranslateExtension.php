@@ -24,6 +24,7 @@ use Evrinoma\UtilsBundle\Adaptor\AdaptorRegistry;
 use Evrinoma\UtilsBundle\Adaptor\AdaptorRegistryInterface;
 use Evrinoma\UtilsBundle\DependencyInjection\HelperTrait;
 use Evrinoma\UtilsBundle\Handler\BaseHandler;
+use Evrinoma\UtilsBundle\Persistence\ManagerRegistryInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -47,6 +48,7 @@ class EvrinomaTranslateExtension extends Extension
      * @var array
      */
     private static array $doctrineDrivers = [
+        'api' => [],
         'orm' => [
             'registry' => 'doctrine',
             'tag' => 'doctrine.event_subscriber',
@@ -88,7 +90,16 @@ class EvrinomaTranslateExtension extends Extension
         }
 
         if (isset(self::$doctrineDrivers[$config['db_driver']]) && 'api' === $config['db_driver']) {
-            // @ToDo
+            $registry = new Reference(ManagerRegistryInterface::class);
+
+            if (true === $config['fetch']['enabled']) {
+                $loader->load('api.yml');
+                foreach ($config['fetch']['urls'] as $name => $methods) {
+                    foreach ($methods as $method => $url) {
+                        $this->wireFetch($container, $name, $method, $config['fetch']['host'], $url);
+                    }
+                }
+            }
         }
 
         if (null !== $registry) {
@@ -101,7 +112,7 @@ class EvrinomaTranslateExtension extends Extension
             [
                 '' => [
                     'db_driver' => 'evrinoma.'.$this->getAlias().'.storage',
-                    'entity' => 'evrinoma.'.$this->getAlias().'.entity',
+                    'entity' => 'evrinoma.'.$this->getAlias().'.entity_translate',
                 ],
             ]
         );
@@ -165,6 +176,13 @@ class EvrinomaTranslateExtension extends Extension
         }
     }
 
+    private function wireFetch(ContainerBuilder $container, string $name, string $method, string $host, string $route): void
+    {
+        $definitionFetch = $container->getDefinition((string) $container->getAlias('evrinoma.'.$this->getAlias().'.'.$name.'.fetch.'.$method));
+        $definitionFetch->setArgument(0, $host);
+        $definitionFetch->setArgument(1, $route);
+    }
+
     private function wireAdaptorRegistry(ContainerBuilder $container, Reference $registry): void
     {
         $definitionAdaptor = new Definition(AdaptorRegistry::class);
@@ -189,7 +207,7 @@ class EvrinomaTranslateExtension extends Extension
     private function wireRepository(ContainerBuilder $container, Reference $registry, string $class, string $driver): void
     {
         $definitionRepository = $container->getDefinition('evrinoma.'.$this->getAlias().'.'.$driver.'.repository');
-        $definitionQueryMediator = $container->getDefinition('evrinoma.'.$this->getAlias().'.query.mediator');
+        $definitionQueryMediator = $container->getDefinition('evrinoma.'.$this->getAlias().'.query.'.$driver.'.mediator');
         $definitionRepository->setArgument(0, $registry);
         $definitionRepository->setArgument(1, $class);
         $definitionRepository->setArgument(2, $definitionQueryMediator);

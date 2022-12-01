@@ -26,7 +26,7 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder(EvrinomaTranslateBundle::BUNDLE);
         $rootNode = $treeBuilder->getRootNode();
-        $supportedDrivers = ['orm'];
+        $supportedDrivers = ['orm', 'api'];
 
         $rootNode
             ->addDefaultsIfNotSet()
@@ -51,6 +51,33 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('pre_validator')->defaultNull()->info('This option is used to pre_validator overriding')->end()
             ->scalarNode('handler')->cannotBeEmpty()->defaultValue(EvrinomaTranslateExtension::HANDLER)->info('This option is used to handler override')->end()
             ->end()->end()
+
+            ->arrayNode('fetch')
+            ->beforeNormalization()
+            ->ifString()
+            ->then(function ($v) {
+                if (!('enabled' !== $v ^ 'disabled' !== $v)) {
+                    throw new \InvalidArgumentException(sprintf('"enabled/disabled" Option is missing  [%s]', $v));
+                }
+
+                return [
+                    'enabled' => 'enabled' === $v,
+                ];
+            })
+            ->end()
+            ->canBeDisabled()
+            ->children()
+            ->scalarNode('host')->defaultValue('http://localhost')->end()
+            ->arrayNode('urls')->addDefaultsIfNotSet()->children()
+            ->arrayNode('dummy')->addDefaultsIfNotSet()->children()
+            ->scalarNode('criteria')->isRequired()->cannotBeEmpty()->defaultValue('/api/translate/dummy/')->end()
+            ->end()->end()
+            ->end()->end()
+            ->end()
+            ->end()
+
+            ->end()
+
             ->end();
 
         return $treeBuilder;

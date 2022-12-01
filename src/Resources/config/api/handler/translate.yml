@@ -1,0 +1,4 @@
+services:
+  Evrinoma\TranslateBundle\Fetch\Handler\BaseGetHandler:
+    tags:
+      - { name: 'evrinoma.fetch.handler' }

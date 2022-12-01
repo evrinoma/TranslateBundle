@@ -1,0 +1,8 @@
+services:
+  Evrinoma\TranslateBundle\Fetch\Description\Translate\CriteriaDescription:
+    tags:
+      - { name: 'evrinoma.fetch.description' }
+
+  evrinoma.translate.dummy.fetch.criteria:
+    alias: Evrinoma\TranslateBundle\Fetch\Description\Translate\CriteriaDescription
+    public: true

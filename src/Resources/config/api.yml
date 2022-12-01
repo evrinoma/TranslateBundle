@@ -1,0 +1,3 @@
+imports:
+  - { resource: api/fetch/translate.yml }
+  - { resource: api/handler/translate.yml }

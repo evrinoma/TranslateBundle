@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Evrinoma\TranslateBundle\Mediator;
+namespace Evrinoma\TranslateBundle\Mediator\Orm;
 
 use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\TranslateBundle\Dto\TranslateApiDtoInterface;
+use Evrinoma\TranslateBundle\Mediator\QueryMediatorInterface;
 use Evrinoma\TranslateBundle\Repository\AliasInterface;
 use Evrinoma\UtilsBundle\Mediator\AbstractQueryMediator;
 use Evrinoma\UtilsBundle\Mediator\Orm\QueryMediatorTrait;
