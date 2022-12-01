@@ -1,0 +1,2 @@
+translate:
+    resource: "@EvrinomaTranslateBundle/Resources/config/routes.yml"

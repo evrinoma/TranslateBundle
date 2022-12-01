@@ -1,0 +1,93 @@
+services:
+  Evrinoma\TranslateBundle\Controller\TranslateApiController:
+    alias: evrinoma.translate.api.controller
+    public: true
+
+  evrinoma.translate.api.controller:
+    class: Evrinoma\TranslateBundle\Controller\TranslateApiController
+    arguments:
+      - '@jms_serializer'
+      - '@request_stack'
+      - '@evrinoma.dto.factory'
+      - '@evrinoma.translate.facade'
+    autowire: true
+
+  evrinoma.translate.facade:
+    class: Evrinoma\TranslateBundle\Facade\Translate\Facade
+    arguments:
+      - '@evrinoma.translate.command.manager'
+      - '@evrinoma.translate.query.manager'
+    autowire: true
+
+  Evrinoma\TranslateBundle\Facade\Translate\FacadeInterface:
+    alias: evrinoma.translate.facade
+
+  evrinoma.translate.factory:
+    class: Evrinoma\TranslateBundle\Factory\TranslateFactory
+    public: true
+    arguments:
+
+  evrinoma.translate.orm.repository:
+    class: Evrinoma\TranslateBundle\Repository\Orm\Translate\TranslateRepository
+    public: true
+    arguments:
+
+  evrinoma.translate.command.manager:
+    class: Evrinoma\TranslateBundle\Manager\CommandManager
+    arguments:
+      - '@evrinoma.translate.validator'
+      - '@evrinoma.translate.repository'
+      - '@evrinoma.translate.factory'
+      - '@evrinoma.translate.command.mediator'
+
+  Evrinoma\TranslateBundle\Manager\CommandManagerInterface:
+    alias: evrinoma.translate.command.manager
+
+  evrinoma.translate.query.manager:
+    class: Evrinoma\TranslateBundle\Manager\QueryManager
+    arguments:
+      - '@evrinoma.translate.repository'
+
+  Evrinoma\TranslateBundle\Manager\QueryManagerInterface:
+    alias: evrinoma.translate.query.manager
+    
+  evrinoma.translate.validator:
+    class: Evrinoma\TranslateBundle\Validator\TranslateValidator
+    public: true
+    arguments:
+
+  Evrinoma\TranslateBundle\Validator\TranslateValidator:
+    alias: evrinoma.translate.validator
+
+  evrinoma.translate.query.mediator:
+    class: Evrinoma\TranslateBundle\Mediator\QueryMediator
+    public: true
+    arguments:
+
+  Evrinoma\TranslateBundle\Mediator\QueryMediator:
+    alias: evrinoma.translate.query.mediator
+
+  Evrinoma\TranslateBundle\Mediator\QueryMediatorInterface:
+    alias: evrinoma.translate.query.mediator
+
+  evrinoma.translate.command.mediator:
+    class: Evrinoma\TranslateBundle\Mediator\CommandMediator
+    public: true
+    arguments:
+
+  Evrinoma\TranslateBundle\Mediator\CommandMediator:
+    alias: evrinoma.translate.command.mediator
+
+  Evrinoma\TranslateBundle\Mediator\CommandMediatorInterface:
+    alias: evrinoma.translate.command.mediator
+
+  evrinoma.translate.pre.validator:
+    class: Evrinoma\TranslateBundle\PreValidator\DtoPreValidator
+    public: true
+    arguments:
+
+  Evrinoma\TranslateBundle\PreValidator\DtoPreValidator:
+    alias: evrinoma.translate.pre.validator
+
+  Evrinoma\TranslateBundle\PreValidator\DtoPreValidatorInterface:
+    alias: evrinoma.translate.pre.validator

@@ -1,0 +1,3 @@
+translateapi:
+  resource: "@EvrinomaTranslateBundle/Resources/config/routing/api.yml"
+  prefix: evrinoma

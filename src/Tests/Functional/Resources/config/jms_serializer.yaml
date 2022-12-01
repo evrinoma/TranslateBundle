@@ -1,0 +1,6 @@
+jms_serializer:
+  metadata:
+    directories:
+      TranslateBundle:
+        namespace_prefix: "Evrinoma\\TranslateBundle"
+        path: '%kernel.root_dir%/Resources/config/serializer/TranslateBundle'

@@ -1,0 +1,6 @@
+Evrinoma\TranslateBundle\Model\Translate\AbstractTranslate:
+  exclusion_policy: ALL
+  properties:
+    id:
+      groups: [ API_GET_TRANSLATE, API_POST_TRANSLATE, API_PUT_TRANSLATE, ]
+      expose: true

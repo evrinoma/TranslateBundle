@@ -1,0 +1,3 @@
+translate_api:
+  resource: "@EvrinomaTranslateBundle/Controller/TranslateApiController.php"
+  type: annotation
