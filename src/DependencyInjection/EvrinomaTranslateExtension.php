@@ -179,7 +179,7 @@ class EvrinomaTranslateExtension extends Extension
         }
     }
 
-    private function wireMediator(ContainerBuilder $container, string $class, string $driver, string $name): void
+    private function wireMediator(ContainerBuilder $container, string $class, string $driver): void
     {
         $definitionQueryMediator = $container->getDefinition('evrinoma.'.$this->getAlias().'.query.'.$driver.'.mediator');
         $container->addDefinitions([$class => $definitionQueryMediator]);
