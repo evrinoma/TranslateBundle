@@ -107,7 +107,7 @@ class EvrinomaTranslateExtension extends Extension
             $this->wireAdaptorRegistry($container, $registry);
         }
 
-        $this->wireMediator($container, $config['db_driver']);
+        $this->wireMediator($container, QueryMediatorInterface::class, $config['db_driver']);
 
         $this->remapParametersNamespaces(
             $container,
@@ -179,10 +179,10 @@ class EvrinomaTranslateExtension extends Extension
         }
     }
 
-    private function wireMediator(ContainerBuilder $container, string $driver): void
+    private function wireMediator(ContainerBuilder $container, string $class, string $driver, string $name): void
     {
         $definitionQueryMediator = $container->getDefinition('evrinoma.'.$this->getAlias().'.query.'.$driver.'.mediator');
-        $container->addDefinitions([QueryMediatorInterface::class => $definitionQueryMediator]);
+        $container->addDefinitions([$class => $definitionQueryMediator]);
     }
 
     private function wireFetch(ContainerBuilder $container, string $name, string $method, string $host, string $route): void
