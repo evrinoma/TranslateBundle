@@ -38,7 +38,7 @@ class MapEntityPass extends AbstractMapEntity implements CompilerPassInterface
 
             $this->cleanMetadata($driver, [EvrinomaTranslateExtension::ENTITY]);
 
-            $entityTranslate = $container->getParameter('evrinoma.translate.entity');
+            $entityTranslate = $container->getParameter('evrinoma.translate.entity_translate');
             if (str_contains($entityTranslate, EvrinomaTranslateExtension::ENTITY)) {
                 $this->loadMetadata($driver, $referenceAnnotationReader, '%s/Model/Translate', '%s/Entity/Translate');
             }

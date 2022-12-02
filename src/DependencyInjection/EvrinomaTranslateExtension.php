@@ -18,6 +18,7 @@ use Evrinoma\TranslateBundle\Dto\TranslateApiDto;
 use Evrinoma\TranslateBundle\Entity\Translate\BaseTranslate;
 use Evrinoma\TranslateBundle\EvrinomaTranslateBundle;
 use Evrinoma\TranslateBundle\Factory\TranslateFactory;
+use Evrinoma\TranslateBundle\Mediator\QueryMediatorInterface;
 use Evrinoma\TranslateBundle\Repository\Translate\TranslateCommandRepositoryInterface;
 use Evrinoma\TranslateBundle\Repository\Translate\TranslateQueryRepositoryInterface;
 use Evrinoma\UtilsBundle\Adaptor\AdaptorRegistry;
@@ -106,6 +107,8 @@ class EvrinomaTranslateExtension extends Extension
             $this->wireAdaptorRegistry($container, $registry);
         }
 
+        $this->wireMediator($container, $config['db_driver']);
+
         $this->remapParametersNamespaces(
             $container,
             $config,
@@ -176,6 +179,12 @@ class EvrinomaTranslateExtension extends Extension
         }
     }
 
+    private function wireMediator(ContainerBuilder $container, string $driver): void
+    {
+        $definitionQueryMediator = $container->getDefinition('evrinoma.'.$this->getAlias().'.query.'.$driver.'.mediator');
+        $container->addDefinitions([QueryMediatorInterface::class => $definitionQueryMediator]);
+    }
+
     private function wireFetch(ContainerBuilder $container, string $name, string $method, string $host, string $route): void
     {
         $definitionFetch = $container->getDefinition((string) $container->getAlias('evrinoma.'.$this->getAlias().'.'.$name.'.fetch.'.$method));
@@ -207,7 +216,7 @@ class EvrinomaTranslateExtension extends Extension
     private function wireRepository(ContainerBuilder $container, Reference $registry, string $class, string $driver): void
     {
         $definitionRepository = $container->getDefinition('evrinoma.'.$this->getAlias().'.'.$driver.'.repository');
-        $definitionQueryMediator = $container->getDefinition('evrinoma.'.$this->getAlias().'.query.'.$driver.'.mediator');
+        $definitionQueryMediator = $container->getDefinition(QueryMediatorInterface::class);
         $definitionRepository->setArgument(0, $registry);
         $definitionRepository->setArgument(1, $class);
         $definitionRepository->setArgument(2, $definitionQueryMediator);

@@ -80,9 +80,6 @@ services:
   Evrinoma\TranslateBundle\Mediator\Api\QueryMediator:
     alias: evrinoma.translate.query.api.mediator
 
-  Evrinoma\TranslateBundle\Mediator\QueryMediatorInterface:
-    alias: evrinoma.translate.query.mediator
-
   evrinoma.translate.command.mediator:
     class: Evrinoma\TranslateBundle\Mediator\CommandMediator
     public: true
