@@ -22,7 +22,6 @@ use Evrinoma\TranslateBundle\Mediator\QueryMediatorInterface;
 use Evrinoma\TranslateBundle\Repository\Translate\TranslateCommandRepositoryInterface;
 use Evrinoma\TranslateBundle\Repository\Translate\TranslateQueryRepositoryInterface;
 use Evrinoma\UtilsBundle\Adaptor\AdaptorRegistry;
-use Evrinoma\UtilsBundle\Adaptor\AdaptorRegistryInterface;
 use Evrinoma\UtilsBundle\DependencyInjection\HelperTrait;
 use Evrinoma\UtilsBundle\Handler\BaseHandler;
 use Evrinoma\UtilsBundle\Persistence\ManagerRegistryInterface;
@@ -196,9 +195,7 @@ class EvrinomaTranslateExtension extends Extension
     {
         $definitionAdaptor = new Definition(AdaptorRegistry::class);
         $definitionAdaptor->addArgument($registry);
-        $alias = new Alias('evrinoma.'.$this->getAlias().'.adaptor');
         $container->addDefinitions(['evrinoma.'.$this->getAlias().'.adaptor' => $definitionAdaptor]);
-        $container->addAliases([AdaptorRegistryInterface::class => $alias]);
     }
 
     private function wireConstraintTag(ContainerBuilder $container): void

@@ -17,6 +17,7 @@ services:
     arguments:
       - '@evrinoma.translate.command.manager'
       - '@evrinoma.translate.query.manager'
+      - '@evrinoma.translate.adaptor'
     autowire: true
 
   Evrinoma\TranslateBundle\Facade\Translate\FacadeInterface:
